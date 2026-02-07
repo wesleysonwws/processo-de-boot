@@ -12,7 +12,7 @@ O objetivo é explicar cada etapa com clareza e exemplos simples, como um materi
 - 🧠 Kernel e initramfs
 - ⚙️ systemd como PID 1
 - 🧾 Diagramas e sequência do processo
-- 📂 Estrutura do diretório /boot
+- 📂 Estrutura do diretório `/boot`
 - ⏱️ Análise do tempo de boot
 - 🛠️ Troubleshooting e Recovery Mode
 ---
@@ -43,6 +43,8 @@ O processo de boot do Linux segue as etapas abaixo:
 **. ⏱️ Análise de boot → boot-analysis.md**
 
 **. 🛠️ Troubleshooting → boot-troubleshooting.md**
+
+**. 🧰 GRUB Recovery** → `grub-recovery.md`**
 
 ---
 Todo o conteúdo técnico detalhado está documentado nos arquivos individuais deste repositório.
