@@ -32,8 +32,7 @@ Alguns sinais indicam problemas no boot:
 - Entrada em Emergency Mode  
 - Falha na montagem de discos  
 
-Esses sintomas ajudam a identificar em qual etapa do boot
-o problema está ocorrendo
+Esses sintomas ajudam a identificar em qual etapa do boot o problema está ocorrendo.
 
 ---
 ## 🔎 Análise de Logs do Boot
@@ -42,60 +41,136 @@ A primeira etapa do troubleshooting é a verificação de logs.
 
 ### Boot atual
 
-```bash
-journalctl -b
+    journalctl -b
 
----
+#### Apenas erros do boot
 
-Para visualizar somente mensagens de erro do boot atual:
-journalctl -p err -b
+    journalctl -p err -b
 
-Também é possível incluir avisos (warnings):
-journalctl -p warning -b
+
+Também é possível incluir avisos:
+
+    journalctl -p warning -b
 
 Isso facilita a identificação de falhas críticas sem precisar analisar todo o log.
 
+---
+
+## ⚙️ Serviços que Falharam no Boot
 
 Para listar serviços que falharam durante a inicialização:
-systemctl --failed
+
+    systemctl --failed
 
 Esse comando exibe:
-. Serviços que não iniciaram corretamente
-. Estado atual
-. Descrição da falha
+
+- Serviços que não iniciaram corretamente  
+- Estado atual  
+- Descrição da falha  
 
 É um dos principais comandos de troubleshooting com systemd.
 
-Para investigar um serviço específico:
-systemctl status nome-do-servico
+---
+
+### Analisar serviço específico
+
+    systemctl status nome-do-servico
 
 Exemplo:
-systemctl status docker.service
+
+    systemctl status docker.service
 
 A saída mostra:
 
-. Logs recentes do serviço
+- Logs recentes do serviço  
+- Código de erro  
+- Tempo de execução  
+- Dependências envolvidas  
 
-. Código de erro
+---
 
-. Tempo de execução
+## 💥 Kernel Panic
 
-. Dependências envolvidas
+O Kernel Panic é uma falha crítica onde o kernel não consegue continuar a execução do sistema.
 
-O Kernel Panic é uma falha crítica onde o kernel não consegue continuar
-a execução do sistema.
+### Sintomas comuns
 
-Sintomas comuns:
+- Tela preta com mensagens técnicas  
+- Travamento total do sistema  
+- Necessidade de reinicialização manual  
 
-Tela preta com mensagens técnicas
+---
 
-Travamento total do sistema
+### Análise de mensagens do kernel
 
-Necessidade de reinicialização manual
+    dmesg | less
 
-Para analisar mensagens do kernel:
+Esse comando exibe logs gerados diretamente pelo kernel, permitindo identificar drivers, falhas de hardware ou erros de inicialização.
 
-dmesg | less
+---
 
-Esse comando exibe logs gerados diretamente pelo kernel.
+## 🐢 Análise de Tempo de Boot
 
+Para verificar o tempo total de inicialização:
+
+    systemd-analyze
+
+---
+
+### Serviços mais lentos
+
+    systemd-analyze blame
+
+Lista os serviços que mais demoraram para iniciar.
+
+---
+
+### Cadeia crítica do boot
+
+    systemd-analyze critical-chain
+
+Mostra a sequência de serviços que impactam diretamente o tempo de boot.
+
+---
+
+## 💾 Problemas de Disco e Filesystem
+
+Falhas em disco podem impedir o boot.
+
+### Sintomas
+
+- Entrada em Emergency Mode  
+- Erros de mount  
+- Falha ao carregar partições  
+
+---
+
+### Diagnóstico
+
+    lsblk
+
+    cat /etc/fstab
+
+---
+
+### Correção de filesystem
+
+    fsck /dev/sda1
+
+> Substituir pela partição correta conforme o ambiente.
+
+---
+
+## 🧰 Comandos Gerais de Diagnóstico
+
+Ver versão do kernel em uso:
+
+    uname -r
+
+Listar arquivos de boot:
+
+    ls /boot
+
+Serviços carregados:
+
+    systemctl list-units --type=service
